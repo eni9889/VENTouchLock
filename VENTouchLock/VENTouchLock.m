@@ -86,7 +86,10 @@ static NSString *const VENTouchLockUserDefaultsKeyTouchIDActivated = @"VENTouchL
 {
     NSString *service = self.keychainService;
     NSString *account = self.keychainAccount;
-    [SSKeychain setPassword:passcode forService:service account:account];
+    
+    NSError *error = nil;
+    [SSKeychain setPassword:passcode forService:service account:account error:&error];
+    NSLog(@"Error saving: %@", error);
 }
 
 - (void)deletePasscode
@@ -167,7 +170,6 @@ static NSString *const VENTouchLockUserDefaultsKeyTouchIDActivated = @"VENTouchL
         VENTouchLockSplashViewController *splashViewController = [[self.splashViewControllerClass alloc] init];
         if ([splashViewController isKindOfClass:[VENTouchLockSplashViewController class]]) {
             UIWindow *mainWindow = [[UIApplication sharedApplication].windows firstObject];
-            UIViewController *rootViewController = [UIViewController ventouchlock_topMostController];
             UIViewController *displayController;
             if (self.appearance.splashShouldEmbedInNavigationController) {
                 displayController = [splashViewController ventouchlock_embeddedInNavigationController];
@@ -194,6 +196,7 @@ static NSString *const VENTouchLockUserDefaultsKeyTouchIDActivated = @"VENTouchL
                 [mainWindow addSubview:self.snapshotView];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
+                UIViewController *rootViewController = [UIViewController ventouchlock_topMostController];
                 [rootViewController presentViewController:displayController animated:NO completion:^{
                     [splashViewController showUnlockAnimated:NO];
                 }];
