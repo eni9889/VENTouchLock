@@ -48,7 +48,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setLockVisible];
+    self.view.backgroundColor = [UIColor whiteColor];
+    if (!self.isSnapshotViewController) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showUnlockAnimated:NO];
+        });
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -143,13 +148,6 @@
 - (void)initialize
 {
     _touchLock = [VENTouchLock sharedInstance];
-}
-
-- (void)setLockVisible
-{
-    if (!self.isSnapshotViewController) {
-        self.touchLock.backgroundLockVisible = YES;
-    }
 }
 
 @end

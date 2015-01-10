@@ -10,11 +10,11 @@
 
 @end
 
-@interface VENTouchLockSampleTests : XCTestCase
+@interface VENTouchLockAutoLockTests : XCTestCase
 
 @end
 
-@implementation VENTouchLockSampleTests
+@implementation VENTouchLockAutoLockTests
 
 - (void)testBasicCreatePasswordFlow
 {
@@ -140,7 +140,6 @@
     }
     [VENTouchLock sharedInstance].backgroundLockVisible = NO;
     [[VENTouchLock sharedInstance] deletePasscode];
-    [VENTouchLock sharedInstance].appearance = [[VENTouchLockAppearance alloc] init];
 }
 
 - (void)simulateAppBackgroundThenForeground
