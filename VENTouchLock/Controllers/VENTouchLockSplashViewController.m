@@ -50,15 +50,25 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     if (!self.isSnapshotViewController) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showUnlockAnimated:NO];
-        });
+        if (![VENTouchLock shouldUseTouchID]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showPasscodeAnimated:NO];
+            });
+        }
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if (!self.isSnapshotViewController) {
+        if ([VENTouchLock shouldUseTouchID]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [self showTouchID];
+            });
+        }
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
@@ -71,19 +81,9 @@
 
 #pragma mark - Present unlock methods
 
-- (void)showUnlockAnimated:(BOOL)animated
-{
-    if ([VENTouchLock shouldUseTouchID]) {
-        [self showTouchID];
-    }
-    else {
-        [self showPasscodeAnimated:animated];
-    }
-}
-
 - (void)showTouchID
 {
-    __weak VENTouchLockSplashViewController *weakSelf = self;
+    __weak __typeof__(self) weakSelf = self;
     [self.touchLock requestTouchIDWithCompletion:^(VENTouchLockTouchIDResponse response) {
         switch (response) {
             case VENTouchLockTouchIDResponseSuccess:
@@ -100,15 +100,20 @@
 
 - (void)showPasscodeAnimated:(BOOL)animated
 {
-    [self presentViewController:[[self enterPasscodeVC] embeddedInNavigationController]
-                                            animated:animated
-                                          completion:nil];
+    UIViewController *enterPassCodeViewController;
+    if (self.touchLock.appearance.passcodeViewControllerShouldEmbedInNavigationController) {
+        enterPassCodeViewController = [[self enterPasscodeVC] embeddedInNavigationController];
+    } else {
+        enterPassCodeViewController = [self enterPasscodeVC];
+    }
+
+    [self presentViewController:enterPassCodeViewController animated:animated completion:nil];
 }
 
 - (VENTouchLockEnterPasscodeViewController *)enterPasscodeVC
 {
     VENTouchLockEnterPasscodeViewController *enterPasscodeVC = [[VENTouchLockEnterPasscodeViewController alloc] init];
-    __weak VENTouchLockSplashViewController *weakSelf = self;
+    __weak __typeof__(self) weakSelf = self;
     enterPasscodeVC.willFinishWithResult = ^(BOOL success) {
         if (success) {
             [weakSelf unlockWithType:VENTouchLockSplashViewControllerUnlockTypePasscode];
@@ -123,7 +128,9 @@
 - (void)appWillEnterForeground
 {
     if (!self.presentedViewController) {
-        [self showUnlockAnimated:NO];
+        if (![VENTouchLock shouldUseTouchID]) {
+            [self showPasscodeAnimated:NO];
+        }
     }
 }
 
