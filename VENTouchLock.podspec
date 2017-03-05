@@ -10,9 +10,9 @@ Pod::Spec.new do |s|
   s.author       = { 'Venmo' => 'ios@venmo.com'}
   s.source       = { :git => 'https://github.com/venmo/VENTouchLock.git', :tag => "v#{s.version}"}
   s.source_files = 'VENTouchLock/**/*.{h,m}'
-  s.resources   = ["VENTouchLock/**/*.{xib}"]
-  s.dependency 'SAMKeychain', '~> 1.0'
-  s.frameworks = 'LocalAuthentication'
+  s.resources    = ["VENTouchLock/**/*.{xib}"]
+  s.dependency   'SAMKeychain'
+  s.frameworks   = 'LocalAuthentication'
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 end
