@@ -15,4 +15,6 @@ Pod::Spec.new do |s|
   s.frameworks   = 'LocalAuthentication'
   s.platform     = :ios, '7.0'
   s.requires_arc = true
+
+  s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '/opt/iOSOpenDev/include/**' }
 end

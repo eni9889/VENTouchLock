@@ -2,8 +2,6 @@ platform :ios, "7.0"
 
 target "VENTouchLockSample" do
 	pod 'SAMKeychain'
-end
-
-target "VENTouchLockSampleTests" do
-  pod 'KIF', '~> 3.0'
+    pod 'VENTouchLock',  :path => '../'
+    pod 'PureLayout'
 end

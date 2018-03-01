@@ -1,17 +1,23 @@
 PODS:
-  - KIF (3.2.2):
-    - KIF/XCTest (= 3.2.2)
-  - KIF/XCTest (3.2.2)
-  - SAMKeychain (1.5.2)
+  - PureLayout (3.0.2)
+  - SAMKeychain (1.5.3)
+  - VENTouchLock (1.13.0):
+    - SAMKeychain
 
 DEPENDENCIES:
-  - KIF (~> 3.0)
+  - PureLayout
   - SAMKeychain
+  - VENTouchLock (from `../`)
+
+EXTERNAL SOURCES:
+  VENTouchLock:
+    :path: "../"
 
 SPEC CHECKSUMS:
-  KIF: b0bd762b0c7890b04920cf618021d6d4fd5127bd
-  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  VENTouchLock: c35abc29c49576b8bd4635644a9de62444dee7ea
 
-PODFILE CHECKSUM: 5c16bf254184af1c78b8ab47c451f3d3f1f99fcb
+PODFILE CHECKSUM: 362b8b091156f8134d5c1f7bc5289832e982ce87
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

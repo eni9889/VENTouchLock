@@ -1,14 +1,16 @@
 #import "VENTouchLockPasscodeView.h"
 #import "VENTouchLockPasscodeCharacterView.h"
+#import "PureLayout.h"
+
 @import AudioToolbox;
 
 @interface VENTouchLockPasscodeView ()
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *firstCharacter;
-@property (weak, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *secondCharacter;
-@property (weak, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *thirdCharacter;
-@property (weak, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *fourthCharacter;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *firstCharacter;
+@property (strong, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *secondCharacter;
+@property (strong, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *thirdCharacter;
+@property (strong, nonatomic) IBOutlet VENTouchLockPasscodeCharacterView *fourthCharacter;
 
 @end
 
@@ -16,12 +18,33 @@
 
 - (instancetype)initWithTitle:(NSString *)title frame:(CGRect)frame titleColor:(UIColor *)titleColor characterColor:(UIColor *)characterColor
 {
-    NSArray *nibArray = [[NSBundle bundleForClass:[self class]] loadNibNamed:NSStringFromClass([self class])
-                                                      owner:self options:nil];
-    self = [nibArray firstObject];
-    if (self) {
+//    NSArray *nibArray = [[NSBundle bundleForClass:[self class]] loadNibNamed:NSStringFromClass([self class])
+//                                                      owner:self options:nil];
+//    self = [nibArray firstObject];
+    if (self = [super initWithFrame:CGRectMake(0, 0, 600, 600)]) {
         self.frame = frame;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        
+        UILabel *titleLabel = [[UILabel alloc] initForAutoLayout];
+        [titleLabel setText:@"Create a new Passcode"];
+        [titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        [self addSubview:titleLabel];
+        [titleLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self withOffset:-0.5];
+        
+        UIView *container = [[UIView alloc] initForAutoLayout];
+        [self addSubview:container];
+        [container autoAlignAxis:ALAxisVertical toSameAxisOfView:self withOffset:-0.5];
+        [container autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self withOffset:0.5];
+        [container autoSetDimensionsToSize:CGSizeMake(140.0f, 20.0f)];
+        
+        [container autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:titleLabel withOffset:20];
+        
+        _firstCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        _secondCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(40, 0, 20, 20)];
+        _thirdCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(80, 0, 20, 20)];
+        _fourthCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(120, 0, 20, 20)];
+        
+        
         _title = title;
         _titleLabel.text = title;
         _titleColor = titleColor;
@@ -30,6 +53,7 @@
         _characters = @[_firstCharacter, _secondCharacter, _thirdCharacter, _fourthCharacter];
         for (VENTouchLockPasscodeCharacterView *characterView in _characters) {
             characterView.fillColor = characterColor;
+            [container addSubview:characterView];
         }
     }
     return self;
