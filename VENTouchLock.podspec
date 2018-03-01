@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'VENTouchLock'
-  s.version      = '1.13.0'
+  s.version      = '1.13.1'
   s.summary      = 'A passcode framework that features Touch ID'
   s.description   = <<-DESC
                    An easy to use passcode framework used in the Venmo app.
@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
   s.author       = { 'Venmo' => 'ios@venmo.com'}
   s.source       = { :git => 'https://github.com/venmo/VENTouchLock.git', :tag => "v#{s.version}"}
   s.source_files = 'VENTouchLock/**/*.{h,m}'
-  s.resources    = ["VENTouchLock/**/*.{xib}"]
   s.dependency   'SAMKeychain'
   s.frameworks   = 'LocalAuthentication'
   s.platform     = :ios, '7.0'
