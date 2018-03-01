@@ -16,20 +16,15 @@
 
 @implementation VENTouchLockPasscodeView
 
-- (instancetype)initWithTitle:(NSString *)title frame:(CGRect)frame titleColor:(UIColor *)titleColor characterColor:(UIColor *)characterColor
-{
-//    NSArray *nibArray = [[NSBundle bundleForClass:[self class]] loadNibNamed:NSStringFromClass([self class])
-//                                                      owner:self options:nil];
-//    self = [nibArray firstObject];
-    if (self = [super initWithFrame:CGRectMake(0, 0, 600, 600)]) {
-        self.frame = frame;
+- (instancetype)initWithTitle:(NSString *)title frame:(CGRect)frame titleColor:(UIColor *)titleColor characterColor:(UIColor *)characterColor {
+    if (self = [super initWithFrame:frame]) {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
         
-        UILabel *titleLabel = [[UILabel alloc] initForAutoLayout];
-        [titleLabel setText:@"Create a new Passcode"];
-        [titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [self addSubview:titleLabel];
-        [titleLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self withOffset:-0.5];
+        self.titleLabel = [[UILabel alloc] initForAutoLayout];
+        [self.titleLabel setText:@"Create a new Passcode"];
+        [self.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        [self addSubview:self.titleLabel];
+        [self.titleLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self withOffset:-0.5];
         
         UIView *container = [[UIView alloc] initForAutoLayout];
         [self addSubview:container];
@@ -37,13 +32,12 @@
         [container autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self withOffset:0.5];
         [container autoSetDimensionsToSize:CGSizeMake(140.0f, 20.0f)];
         
-        [container autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:titleLabel withOffset:20];
+        [container autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:20];
         
         _firstCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         _secondCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(40, 0, 20, 20)];
         _thirdCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(80, 0, 20, 20)];
         _fourthCharacter = [[VENTouchLockPasscodeCharacterView alloc] initWithFrame:CGRectMake(120, 0, 20, 20)];
-        
         
         _title = title;
         _titleLabel.text = title;
